@@ -20,16 +20,20 @@ CONFIG = load_config()
 
 def authenticate_google_drive():
     creds = None
-    if os.path.exists('token.json'):
-        creds = Credentials.from_authorized_user_file('token.json', CONFIG['scopes'])
-    if not creds or not creds.valid:
-        if creds and creds.expired and creds.refresh_token:
-            creds.refresh(Request())
-        else:
-            flow = InstalledAppFlow.from_client_secrets_file('credentials.json', CONFIG['scopes'])
-            creds = flow.run_local_server(port=0)
-        with open('token.json', 'w') as token:
-            token.write(creds.to_json())
+    try:
+        if os.path.exists('token.json'):
+            creds = Credentials.from_authorized_user_file('token.json', CONFIG['scopes'])
+        if not creds or not creds.valid:
+            if creds and creds.expired and creds.refresh_token:
+                creds.refresh(Request())
+            else:
+                flow = InstalledAppFlow.from_client_secrets_file('credentials.json', CONFIG['scopes'])
+                creds = flow.run_local_server(port=0)
+            with open('token.json', 'w') as token:
+                token.write(creds.to_json())
+    except Exception as e:
+        send_mattermost_message(f"Error during Google Drive authentication: {str(e)}")
+        raise  # Optional: Weiterhin den Fehler auslösen, wenn du willst, dass das Skript stoppt.
     return creds
 
 
@@ -47,19 +51,19 @@ def find_latest_file(service, folder_id):
 
 
 def check_folder(service, folder_config, now):
-    folder_id = folder_config['id']
-    interval = folder_config['interval']
-    recursive = folder_config['recursive']
+    try:
+        folder_id = folder_config['id']
+        interval = folder_config['interval']
+        recursive = folder_config['recursive']
 
-    # Now, let's correctly unpack the tuple returned by the recursive function
-    latest_file, latest_time = find_latest_file_recursive(service, folder_id) if recursive else find_latest_file(
-        service, folder_id)
+        latest_file, latest_time = find_latest_file_recursive(service, folder_id) if recursive else find_latest_file(service, folder_id)
 
-    if latest_file:
-        # latest_time is already a datetime object, so no need to parse it again
-        if (now - latest_time).total_seconds() > interval * 3600:
-            send_mattermost_message(
-                f"Die neueste Datei im Ordner '{folder_config['name']}' ist älter als {interval} Stunden.")
+        if latest_file:
+            if (now - latest_time).total_seconds() > interval * 3600:
+                send_mattermost_message(
+                    f"Die neueste Datei im Ordner '{folder_config['name']}' ist älter als {interval} Stunden.")
+    except Exception as e:
+        send_mattermost_message(f"Error checking folder {folder_config['name']}: {str(e)}")
 
 
 def find_latest_file_recursive(service, folder_id, latest_file=None, latest_time=None):
@@ -90,14 +94,17 @@ def send_mattermost_message(message):
 
 def main():
     while True:
-        creds = authenticate_google_drive()
-        service = build('drive', 'v3', credentials=creds)
-        now = datetime.datetime.now(datetime.timezone.utc)
-        for folder_name, folder_config in CONFIG['folders'].items():
-            check_folder(service, folder_config, now)
-
-        # wait for e.g. 2 hours (6 * 60 * 60 seconds)
-        time.sleep(2 * 60 * 60)
+        try:
+            creds = authenticate_google_drive()
+            service = build('drive', 'v3', credentials=creds)
+            now = datetime.datetime.now(datetime.timezone.utc)
+            for folder_name, folder_config in CONFIG['folders'].items():
+                check_folder(service, folder_config, now)
+        except Exception as e:
+            send_mattermost_message(f"Unexpected error: {str(e)}")
+        finally:
+            # Warte z.B. 2 Stunden
+            time.sleep(2 * 60 * 60)
 
 
 if __name__ == '__main__':
