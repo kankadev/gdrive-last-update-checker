@@ -14,11 +14,15 @@ def load_json_file(filename):
         with open(filename, 'r') as file:
             return json.load(file)
     except json.JSONDecodeError as e:
-        print(f"Error decoding JSON from {filename}: {e}")
-        return None  # Oder handle den Fehler, wie es in deinem Kontext sinnvoll ist
-    except Exception as e:
-        print(f"An error occurred while reading {filename}: {str(e)}")
+        print(f"Error decoding JSON from {filename}: {str(e)}")
+        print(f"Content of {filename}:")
+        with open(filename, 'r') as file:
+            print(file.read())
         return None
+    except Exception as e:
+        print(f"Error reading {filename}: {str(e)}")
+        return None
+
 
 
 CONFIG = load_json_file('config.json')

@@ -5,7 +5,11 @@ FROM python:3.9-slim
 WORKDIR /usr/src/app
 
 # Kopiere die benötigten Dateien in das Arbeitsverzeichnis
-COPY requirements.txt main.py config.json credentials.json token.json ./
+COPY requirements.txt .
+COPY main.py .
+COPY config.json .
+COPY credentials.json .
+COPY token.json .
 
 # Installiere benötigte Python-Pakete
 RUN pip install --no-cache-dir -r requirements.txt
