@@ -20,12 +20,13 @@ CONFIG = load_config()
 def authenticate_google_drive():
     creds = None
     if os.path.exists('token.json'):
-        creds = Credentials.from_authorized_user_file('token.json')
+        creds = Credentials.from_authorized_user_file('token.json', scopes=CONFIG['scopes'])
     if not creds or not creds.valid:
         if creds and creds.expired and creds.refresh_token:
             creds.refresh(Request())
         else:
-            raise Exception("No valid credentials provided")
+            send_mattermost_message("No valid credentials provided. Please re-authenticate.")
+            raise Exception("No valid credentials provided. Please re-authenticate.")
     return creds
 
 
@@ -82,7 +83,11 @@ def find_latest_file_recursive(service, folder_id, latest_file=None, latest_time
 
 
 def send_mattermost_message(message):
-    requests.post(CONFIG['mattermost_webhook_url'], json={"text": message})
+    try:
+        requests.post(CONFIG['mattermost_webhook_url'], json={"text": message})
+    except requests.exceptions.RequestException as e:
+        print(f"Failed to send Mattermost message: {str(e)}")
+
 
 
 def main():
