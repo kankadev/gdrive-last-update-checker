@@ -1,0 +1,26 @@
+{
+    "scopes": ["https://www.googleapis.com/auth/drive.metadata.readonly"],
+    "mattermost_webhook_url": "",
+    "folders": {
+        "frigate": {
+            "id": "1Hin4cHtQ1ESf9SzflyOAnXAjjqE1ygLi",
+            "interval": 3,
+            "recursive": true
+        },
+        "Backups/QNAP": {
+            "id": "1V92l79N9nLZ_S5iuvujUZWkMa1BP_TnZ",
+            "interval": 24,
+            "recursive": true
+        },
+        "Home Assistant Backups": {
+            "id": "1chLz74gK3Cjlot-axiYrhh5c9ThEnvBx",
+            "interval": 24,
+            "recursive": true
+        },
+        "Updraft Plus": {
+            "id": "15_8VfQ7uTXIZCIStknbuB8ttPowCDaPA",
+            "interval": 336,
+            "recursive": false
+        }
+    }
+}
