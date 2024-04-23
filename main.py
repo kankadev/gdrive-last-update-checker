@@ -9,6 +9,12 @@ from google.oauth2.credentials import Credentials
 from googleapiclient.discovery import build
 
 
+def send_mattermost_message(message):
+    try:
+        requests.post(CONFIG['mattermost_webhook_url'], json={"text": message})
+    except requests.exceptions.RequestException as e:
+        print(f"Failed to send Mattermost message: {str(e)}")
+
 def load_json_file(filename):
     try:
         with open(filename, 'r') as file:
@@ -89,13 +95,6 @@ def find_latest_file_recursive(service, folder_id, latest_file=None, latest_time
             if sub_latest_time > latest_time:
                 latest_file, latest_time = sub_latest_file, sub_latest_time
     return latest_file, latest_time
-
-
-def send_mattermost_message(message):
-    try:
-        requests.post(CONFIG['mattermost_webhook_url'], json={"text": message})
-    except requests.exceptions.RequestException as e:
-        print(f"Failed to send Mattermost message: {str(e)}")
 
 
 def main():
