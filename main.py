@@ -14,15 +14,12 @@ def load_json_file(filename):
         with open(filename, 'r') as file:
             return json.load(file)
     except json.JSONDecodeError as e:
-        print(f"Error decoding JSON from {filename}: {str(e)}")
-        print(f"Content of {filename}:")
-        with open(filename, 'r') as file:
-            print(file.read())
-        return None
+        send_mattermost_message(f"JSON Decode Error in {filename}: {str(e)}")
+    except FileNotFoundError as e:
+        send_mattermost_message(f"File not found {filename}: {str(e)}")
     except Exception as e:
-        print(f"Error reading {filename}: {str(e)}")
-        return None
-
+        send_mattermost_message(f"An error occurred with {filename}: {str(e)}")
+    return None
 
 
 CONFIG = load_json_file('config.json')
