@@ -104,14 +104,13 @@ def main():
             creds = authenticate_google_drive()
             service = build('drive', 'v3', credentials=creds)
             now = datetime.datetime.now(datetime.timezone.utc)
-            for folder_name, folder_config in CONFIG['folders'].items():
+            for folder_config in CONFIG['folders']:  # Achte darauf, dass dies jetzt korrekt ist
                 check_folder(service, folder_config, now)
         except Exception as e:
             send_mattermost_message(f"Unexpected error: {str(e)}")
         finally:
             # Warte z.B. 2 Stunden
             time.sleep(2 * 60 * 60)
-
 
 if __name__ == '__main__':
     main()
