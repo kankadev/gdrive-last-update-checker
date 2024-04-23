@@ -1,12 +1,11 @@
-import json
 import datetime
+import json
 import os
 import time
 
 import requests
-from google.oauth2.credentials import Credentials
-from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
+from google.oauth2.credentials import Credentials
 from googleapiclient.discovery import build
 
 
@@ -20,20 +19,13 @@ CONFIG = load_config()
 
 def authenticate_google_drive():
     creds = None
-    try:
-        if os.path.exists('token.json'):
-            creds = Credentials.from_authorized_user_file('token.json', CONFIG['scopes'])
-        if not creds or not creds.valid:
-            if creds and creds.expired and creds.refresh_token:
-                creds.refresh(Request())
-            else:
-                flow = InstalledAppFlow.from_client_secrets_file('credentials.json', CONFIG['scopes'])
-                creds = flow.run_local_server(port=0)
-            with open('token.json', 'w') as token:
-                token.write(creds.to_json())
-    except Exception as e:
-        send_mattermost_message(f"Error during Google Drive authentication: {str(e)}")
-        raise  # Optional: Weiterhin den Fehler auslösen, wenn du willst, dass das Skript stoppt.
+    if os.path.exists('token.json'):
+        creds = Credentials.from_authorized_user_file('token.json')
+    if not creds or not creds.valid:
+        if creds and creds.expired and creds.refresh_token:
+            creds.refresh(Request())
+        else:
+            raise Exception("No valid credentials provided")
     return creds
 
 
@@ -56,7 +48,8 @@ def check_folder(service, folder_config, now):
         interval = folder_config['interval']
         recursive = folder_config['recursive']
 
-        latest_file, latest_time = find_latest_file_recursive(service, folder_id) if recursive else find_latest_file(service, folder_id)
+        latest_file, latest_time = find_latest_file_recursive(service, folder_id) if recursive else find_latest_file(
+            service, folder_id)
 
         if latest_file:
             if (now - latest_time).total_seconds() > interval * 3600:
