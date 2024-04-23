@@ -9,12 +9,20 @@ from google.oauth2.credentials import Credentials
 from googleapiclient.discovery import build
 
 
-def load_config():
-    with open('config.json', 'r') as config_file:
-        return json.load(config_file)
+def load_json_file(filename):
+    try:
+        with open(filename, 'r') as file:
+            return json.load(file)
+    except json.JSONDecodeError as e:
+        print(f"Error decoding JSON from {filename}: {e}")
+        return None  # Oder handle den Fehler, wie es in deinem Kontext sinnvoll ist
+    except Exception as e:
+        print(f"An error occurred while reading {filename}: {str(e)}")
+        return None
 
 
-CONFIG = load_config()
+CONFIG = load_json_file('config.json')
+TOKEN_INFO = load_json_file('token.json')
 
 
 def authenticate_google_drive():
@@ -87,7 +95,6 @@ def send_mattermost_message(message):
         requests.post(CONFIG['mattermost_webhook_url'], json={"text": message})
     except requests.exceptions.RequestException as e:
         print(f"Failed to send Mattermost message: {str(e)}")
-
 
 
 def main():
