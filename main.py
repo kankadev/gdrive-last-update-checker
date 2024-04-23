@@ -62,17 +62,18 @@ def check_folder(service, folder_config, now):
     try:
         folder_id = folder_config['id']
         interval = folder_config['interval']
-        recursive = folder_config['recursive']
+        name = folder_config.get('name', 'Unknown Folder')
+        recursive = folder_config.get('recursive', False)
 
-        latest_file, latest_time = find_latest_file_recursive(service, folder_id) if recursive else find_latest_file(
-            service, folder_id)
+        latest_file, latest_time = find_latest_file_recursive(service, folder_id) if recursive else find_latest_file(service, folder_id)
 
         if latest_file:
             if (now - latest_time).total_seconds() > interval * 3600:
                 send_mattermost_message(
-                    f"Die neueste Datei im Ordner '{folder_config['name']}' ist älter als {interval} Stunden.")
+                    f"Die neueste Datei im Ordner '{name}' ist älter als {interval} Stunden.")
     except Exception as e:
-        send_mattermost_message(f"Error checking folder {folder_config['name']}: {str(e)}")
+        send_mattermost_message(f"Error checking folder: {str(e)} - Folder Config: {folder_config}")
+
 
 
 def find_latest_file_recursive(service, folder_id, latest_file=None, latest_time=None):
