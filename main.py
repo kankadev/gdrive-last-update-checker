@@ -15,6 +15,7 @@ def send_mattermost_message(message):
     except requests.exceptions.RequestException as e:
         print(f"Failed to send Mattermost message: {str(e)}")
 
+
 def load_json_file(filename):
     try:
         with open(filename, 'r') as file:
@@ -65,7 +66,8 @@ def check_folder(service, folder_config, now):
         name = folder_config.get('name', 'Unknown Folder')
         recursive = folder_config.get('recursive', False)
 
-        latest_file, latest_time = find_latest_file_recursive(service, folder_id) if recursive else find_latest_file(service, folder_id)
+        latest_file, latest_time = find_latest_file_recursive(service, folder_id) if recursive else find_latest_file(
+            service, folder_id)
 
         if latest_file:
             if (now - latest_time).total_seconds() > interval * 3600:
@@ -73,7 +75,6 @@ def check_folder(service, folder_config, now):
                     f"Die neueste Datei im Ordner '{name}' ist älter als {interval} Stunden.")
     except Exception as e:
         send_mattermost_message(f"Error checking folder: {str(e)} - Folder Config: {folder_config}")
-
 
 
 def find_latest_file_recursive(service, folder_id, latest_file=None, latest_time=None):
@@ -111,6 +112,7 @@ def main():
         finally:
             # Warte z.B. 2 Stunden
             time.sleep(2 * 60 * 60)
+
 
 if __name__ == '__main__':
     main()
