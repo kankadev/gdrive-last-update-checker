@@ -9,15 +9,6 @@ from google.oauth2.credentials import Credentials
 from googleapiclient.discovery import build
 
 
-def send_mattermost_message(message):
-    full_message = f"{CONFIG['prefix']} {message}"  # Fügt den Prefix zur Nachricht hinzu
-    try:
-        requests.post(CONFIG['mattermost_webhook_url'], json={"text": full_message})
-    except requests.exceptions.RequestException as e:
-        print(f"Failed to send Mattermost message: {str(e)}")
-
-
-
 def load_json_file(filename):
     try:
         with open(filename, 'r') as file:
@@ -33,6 +24,14 @@ def load_json_file(filename):
 
 CONFIG = load_json_file('config.json')
 TOKEN_INFO = load_json_file('token.json')
+
+
+def send_mattermost_message(message):
+    full_message = f"{CONFIG['prefix']} {message}"  # Fügt den Prefix zur Nachricht hinzu
+    try:
+        requests.post(CONFIG['mattermost_webhook_url'], json={"text": full_message})
+    except requests.exceptions.RequestException as e:
+        print(f"Failed to send Mattermost message: {str(e)}")
 
 
 def authenticate_google_drive():
