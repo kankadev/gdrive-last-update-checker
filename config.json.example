@@ -1,22 +1,28 @@
 {
     "scopes": ["https://www.googleapis.com/auth/drive.metadata.readonly"],
-    "mattermost_webhook_url": "https://mm.kanka.dev/hooks/bup6kme3np8tijp9futjgswpcc",
+    "mattermost_webhook_url": "",
     "folders": [
         {
             "name": "frigate",
-            "id": "1Hin4cHtQ1EwpogjowegyOAnXAjjqE1ygLi",
+            "id": "3~ergergerhgerhflyOAnXAjjqE1ygLi",
             "interval": 3,
             "recursive": true
         },
         {
-            "name": "Backups",
-            "id": "1V92l79N9newrgerhgerhgerkMa1BP_TnZ",
+            "name": "Backups/2",
+            "id": "1V92l79N9eherheherthertheMa1BP_TnZ",
+            "interval": 24,
+            "recursive": true
+        },
+        {
+            "name": "Backups1",
+            "id": "1chLz74geherherherhnvBx",
             "interval": 24,
             "recursive": true
         },
         {
             "name": "Test",
-            "id": "15_8VfQ7uTXIZergherhgerhgeCDaPA",
+            "id": "15_8Vf~erherherherPowCDaPA",
             "interval": 336,
             "recursive": false
         }
