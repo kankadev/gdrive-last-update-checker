@@ -1,4 +1,5 @@
 {
+    "prefix": "[Google Drive Notification]",
     "scopes": ["https://www.googleapis.com/auth/drive.metadata.readonly"],
     "mattermost_webhook_url": "",
     "folders": [

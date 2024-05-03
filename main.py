@@ -10,10 +10,12 @@ from googleapiclient.discovery import build
 
 
 def send_mattermost_message(message):
+    full_message = f"{CONFIG['prefix']} {message}"  # Fügt den Prefix zur Nachricht hinzu
     try:
-        requests.post(CONFIG['mattermost_webhook_url'], json={"text": message})
+        requests.post(CONFIG['mattermost_webhook_url'], json={"text": full_message})
     except requests.exceptions.RequestException as e:
         print(f"Failed to send Mattermost message: {str(e)}")
+
 
 
 def load_json_file(filename):
