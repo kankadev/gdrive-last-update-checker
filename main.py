@@ -100,7 +100,7 @@ def find_latest_file_recursive(service, folder_id, latest_file=None, latest_time
     return latest_file, latest_time
 
 
-last_message_time = None  # Initialisiere die Variable mit None
+last_message_time = None
 
 
 def send_daily_message(message):
@@ -108,7 +108,7 @@ def send_daily_message(message):
     now = datetime.datetime.now(datetime.timezone.utc)
     if last_message_time is None or (now - last_message_time).total_seconds() > 86400:  # 86400 Sekunden sind 24 Stunden
         send_mattermost_message(message)
-        last_message_time = now  # Aktualisiere den Zeitstempel der letzten Nachricht
+        last_message_time = now
 
 
 def main():
