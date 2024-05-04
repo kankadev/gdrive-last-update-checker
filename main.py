@@ -13,10 +13,10 @@ def load_json_file(filename):
     try:
         with open(filename, 'r') as file:
             content = file.read()
-            print("Content before parsing:", content)  # Zum Debuggen: Ausgabe des gesamten Inhalts
+            print(f"Reading {filename}: {content}")
             return json.loads(content)
     except json.JSONDecodeError as e:
-        send_mattermost_message(f"JSON Decode Error in {filename}: {str(e)}")
+        send_mattermost_message(f"JSON Decode Error in {filename}: {str(e)} - Content: {content}")
     except FileNotFoundError as e:
         send_mattermost_message(f"File not found {filename}: {str(e)}")
     except Exception as e:
