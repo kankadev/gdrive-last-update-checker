@@ -22,16 +22,16 @@ def load_json_file(filename):
     return None
 
 
-CONFIG = load_json_file('config.json')
-TOKEN_INFO = load_json_file('token.json')
-
-
 def send_mattermost_message(message):
     full_message = f"{CONFIG['prefix']} {message}"  # Fügt den Prefix zur Nachricht hinzu
     try:
         requests.post(CONFIG['mattermost_webhook_url'], json={"text": full_message})
     except requests.exceptions.RequestException as e:
         print(f"Failed to send Mattermost message: {str(e)}")
+
+
+CONFIG = load_json_file('config.json')
+TOKEN_INFO = load_json_file('token.json')
 
 
 def authenticate_google_drive():
