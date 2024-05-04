@@ -12,7 +12,9 @@ from googleapiclient.discovery import build
 def load_json_file(filename):
     try:
         with open(filename, 'r') as file:
-            return json.load(file)
+            content = file.read()
+            print("Content before parsing:", content)  # Zum Debuggen: Ausgabe des gesamten Inhalts
+            return json.loads(content)
     except json.JSONDecodeError as e:
         send_mattermost_message(f"JSON Decode Error in {filename}: {str(e)}")
     except FileNotFoundError as e:
@@ -20,6 +22,7 @@ def load_json_file(filename):
     except Exception as e:
         send_mattermost_message(f"An error occurred with {filename}: {str(e)}")
     return None
+
 
 
 def send_mattermost_message(message):
