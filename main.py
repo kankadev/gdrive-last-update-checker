@@ -106,7 +106,7 @@ last_message_time = None
 def send_daily_message(message):
     global last_message_time
     now = datetime.datetime.now(datetime.timezone.utc)
-    if last_message_time is None or (now - last_message_time).total_seconds() > 86400:  # 86400 Sekunden sind 24 Stunden
+    if last_message_time is None or (now - last_message_time).total_seconds() > 86400:  # 86400 seconds = 1 day
         send_mattermost_message(message)
         last_message_time = now
 
@@ -119,12 +119,12 @@ def main():
             creds = authenticate_google_drive()
             service = build('drive', 'v3', credentials=creds)
             now = datetime.datetime.now(datetime.timezone.utc)
-            for folder_config in CONFIG['folders']:  # Achte darauf, dass dies jetzt korrekt ist
+            for folder_config in CONFIG['folders']:
                 check_folder(service, folder_config, now)
         except Exception as e:
             send_mattermost_message(f"Unexpected error: {str(e)}")
         finally:
-            # Warte z.B. 2 Stunden
+            # wait 2 hours before checking again
             time.sleep(2 * 60 * 60)
 
 
