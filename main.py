@@ -100,9 +100,22 @@ def find_latest_file_recursive(service, folder_id, latest_file=None, latest_time
     return latest_file, latest_time
 
 
+last_message_time = None  # Initialisiere die Variable mit None
+
+
+def send_daily_message(message):
+    global last_message_time
+    now = datetime.datetime.now(datetime.timezone.utc)
+    if last_message_time is None or (now - last_message_time).total_seconds() > 86400:  # 86400 Sekunden sind 24 Stunden
+        send_mattermost_message(message)
+        last_message_time = now  # Aktualisiere den Zeitstempel der letzten Nachricht
+
+
 def main():
+    global last_message_time
     while True:
         try:
+            send_daily_message("Daily reminder... I'm still working.")
             creds = authenticate_google_drive()
             service = build('drive', 'v3', credentials=creds)
             now = datetime.datetime.now(datetime.timezone.utc)
