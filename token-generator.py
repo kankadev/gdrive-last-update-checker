@@ -7,7 +7,7 @@ credentials_path = 'credentials.json'
 token_path = 'token.json'
 
 # Berechtigungsbereiche
-scopes = ['https://www.googleapis.com/auth/drive.metadata.readonly']
+scopes = ['https://www.googleapis.com/auth/drive']
 
 
 def authorize():
