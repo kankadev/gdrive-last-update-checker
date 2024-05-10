@@ -24,7 +24,6 @@ def load_json_file(filename):
     return None
 
 
-
 def send_mattermost_message(message):
     full_message = f"{CONFIG['prefix']} {message}"  # Fügt den Prefix zur Nachricht hinzu
     try:
