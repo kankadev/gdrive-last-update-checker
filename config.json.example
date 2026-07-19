@@ -1,30 +1,38 @@
 {
     "prefix": "[Google Drive Notification]",
-    "scopes": ["https://www.googleapis.com/auth/drive.metadata.readonly"],
-    "mattermost_webhook_url": "",
+    "scopes": ["https://www.googleapis.com/auth/drive"],
+    "mattermost_webhook_url": "https://your-mattermost-instance/hooks/xxxxx",
+    "check_interval": "2h",
     "folders": [
         {
-            "name": "frigate",
-            "id": "3~ergergerhgerhflyOAnXAjjqE1ygLi",
-            "interval": 3,
+            "name": "Frigate (Surveillance Cameras)",
+            "id": "1Hin4cHtQ1ESf9SzflyOAnXAjjqE1ygLi",
+            "interval": "3h",
             "recursive": true
         },
         {
-            "name": "Backups/2",
-            "id": "1V92l79N9eherheherthertheMa1BP_TnZ",
-            "interval": 24,
+            "name": "Backups/QNAP",
+            "id": "1V92l79N9nLZ_S5iuvujUZWkMa1BP_TnZ",
+            "interval": "24h",
+            "recursive": true,
+            "disabled": true
+        },
+        {
+            "name": "Home Assistant Backups",
+            "id": "1chLz74gK3Cjlot-axiYrhh5c9ThEnvBx",
+            "interval": "24h",
             "recursive": true
         },
         {
-            "name": "Backups1",
-            "id": "1chLz74geherherherhnvBx",
-            "interval": 24,
-            "recursive": true
+            "name": "Updraft Plus",
+            "id": "15_8VfQ7uTXIZCIStknbuB8ttPowCDaPA",
+            "interval": "14d",
+            "recursive": false
         },
         {
-            "name": "Test",
-            "id": "15_8Vf~erherherherPowCDaPA",
-            "interval": 336,
+            "name": "TEST - remove after testing",
+            "id": "your-test-folder-id-here",
+            "interval": "1m",
             "recursive": false
         }
     ]

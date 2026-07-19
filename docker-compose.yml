@@ -5,6 +5,8 @@ services:
     container_name: gdrive_checker
     restart: unless-stopped
     volumes:
-      - ./data:/usr/src/app/data
+      - ./config.json:/usr/src/app/config.json:ro
+      - ./credentials.json:/usr/src/app/credentials.json:ro
+      - ./token.json:/usr/src/app/token.json
     environment:
       - TZ=Europe/Istanbul

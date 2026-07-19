@@ -1,18 +1,18 @@
+import json
+
 from google_auth_oauthlib.flow import InstalledAppFlow
 
-# Pfade zu den Dateien
 credentials_path = 'credentials.json'
 token_path = 'token.json'
-
-# Berechtigungsbereiche
-scopes = ['https://www.googleapis.com/auth/drive']
+config_path = 'config.json'
 
 
 def authorize():
-    flow = InstalledAppFlow.from_client_secrets_file(
-        credentials_path,
-        scopes=scopes
-    )
+    with open(config_path, 'r') as f:
+        config = json.load(f)
+    scopes = config['scopes']
+
+    flow = InstalledAppFlow.from_client_secrets_file(credentials_path, scopes=scopes)
     creds = flow.run_local_server(port=0)
     with open(token_path, 'w') as token_file:
         token_file.write(creds.to_json())
