@@ -3,6 +3,7 @@
     "scopes": ["https://www.googleapis.com/auth/drive"],
     "mattermost_webhook_url": "https://your-mattermost-instance/hooks/xxxxx",
     "check_interval": "2h",
+    "daily_message_hour": 9,
     "folders": [
         {
             "name": "Frigate (Surveillance Cameras)",

@@ -60,6 +60,7 @@ Copy `config.json.example` to `config.json` and edit it:
 | `scopes` | Google Drive API scopes. Use `https://www.googleapis.com/auth/drive` for full access. |
 | `mattermost_webhook_url` | Mattermost incoming webhook URL. |
 | `check_interval` | How often to check all folders. Supports `m` (minutes), `h` (hours), `d` (days). Default: `2h`. |
+| `daily_message_hour` | Hour (0-23, local time) after which the daily heartbeat message is sent. Prevents notifications at night. Default: `0` (midnight). Example: `9` sends it at the first check after 9:00. |
 | `folders` | Array of folder configurations (see below). |
 
 #### Folder fields

@@ -186,7 +186,11 @@ last_message_time = None
 def send_daily_message(message):
     global last_message_time
     now = datetime.datetime.now(datetime.timezone.utc)
-    if last_message_time is None or (now - last_message_time).total_seconds() > 86400:
+    daily_hour = CONFIG.get('daily_message_hour', 0)
+    local_hour = datetime.datetime.now().hour
+
+    due = last_message_time is None or (now - last_message_time).total_seconds() > 86400
+    if due and local_hour >= daily_hour:
         disabled_folders = [f.get('name', 'Unknown') for f in CONFIG['folders'] if f.get('disabled', False)]
         if disabled_folders:
             message += f"\nDeaktivierte Ordner (uebersprungen): {', '.join(disabled_folders)}"
